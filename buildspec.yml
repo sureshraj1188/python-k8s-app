@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin <your-ecr-url>)
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t python-k8s-app .
+      - docker tag python-k8s-app:latest <your-ecr-url>/python-k8s-app:latest
+  post_build:
+    commands:
+      - echo Pushing Docker image...
+      - docker push <your-ecr-url>/python-k8s-app:latest
+artifacts:
+  files:
+    - k8s/deployment.yaml
+    - k8s/service.yaml

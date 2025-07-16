@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-k8s-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-k8s-app
+  template:
+    metadata:
+      labels:
+        app: python-k8s-app
+    spec:
+      containers:
+        - name: python-k8s-app
+          image: <your-ecr-url>/python-k8s-app:latest
+          ports:
+            - containerPort: 5000
